@@ -1,0 +1,591 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+/* ============================================================
+   Tokens
+   ============================================================ */
+:root {
+  --ink-950: #10141a;
+  --ink-900: #171d26;
+  --ink-850: #1c2330;
+  --ink-800: #232b37;
+  --ink-700: #333d4c;
+
+  --paper-100: #e9edf2;
+  --paper-300: #b7c1cd;
+  --paper-400: #93a1b0;
+
+  --brass-400: #d6b876;
+  --brass-500: #c9a24b;
+  --brass-600: #a9843a;
+
+  --teal-400: #6fbcab;
+  --teal-500: #4fa391;
+
+  --brick-400: #c96a58;
+  --brick-500: #b0503f;
+
+  --divider: rgba(233, 237, 242, 0.1);
+  --shadow-soft: 0 12px 28px rgba(0, 0, 0, 0.28);
+
+  --display: 'Space Grotesk', system-ui, sans-serif;
+  --body: 'Inter', system-ui, sans-serif;
+
+  color-scheme: dark;
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--paper-100);
+  background: var(--ink-950);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+#root {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 24px 64px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--brass-400);
+  outline-offset: 2px;
+}
+
+p {
+  margin: 0;
+}
+
+/* ============================================================
+   Page header
+   ============================================================ */
+h5 {
+  text-align: center;
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  color: var(--paper-400);
+  margin: 28px 0 4px;
+}
+
+h2 {
+  text-align: center;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: var(--paper-100);
+  margin: 0 0 24px;
+}
+
+h3 {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: var(--paper-100);
+  margin: 0 0 16px;
+}
+
+/* ============================================================
+   Row 1 - Accounts list (left) + Account details (right)
+   ============================================================ */
+.accounts-container {
+  display: grid;
+  grid-template-columns: minmax(260px, 360px) 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .accounts-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Accounts list --- */
+#accounts-list {
+  border: 1px solid var(--ink-800);
+  border-radius: 10px;
+  background: var(--ink-900);
+  overflow: hidden;
+}
+
+#accounts-list > p {
+  padding: 20px;
+  color: var(--paper-400);
+  font-size: 0.92rem;
+}
+
+.account-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--divider);
+  border-left: 2px solid transparent;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+#accounts-list .account-card:last-child {
+  border-bottom: none;
+}
+
+.account-card:hover {
+  background: var(--ink-850);
+}
+
+.account-card.active {
+  background: var(--ink-850);
+  border-left-color: var(--brass-500);
+}
+
+.account-card p:first-child {
+  font-weight: 500;
+  color: var(--paper-100);
+}
+
+.account-card p:nth-child(2) {
+  font-variant-numeric: tabular-nums;
+  color: var(--paper-400);
+  font-size: 0.88rem;
+}
+
+.account-card a {
+  flex-shrink: 0;
+  color: var(--brass-400);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.account-card a:hover {
+  color: var(--brass-500);
+  border-bottom-color: currentColor;
+}
+
+.account-card.active a {
+  color: var(--teal-400);
+}
+
+/* --- Account details --- */
+#accounts-details {
+  min-height: 100%;
+}
+
+#accounts-details > p {
+  padding: 28px;
+  color: var(--paper-400);
+  border: 1px dashed var(--ink-800);
+  border-radius: 10px;
+  font-size: 0.92rem;
+}
+
+.account-details-card {
+  border: 1px solid var(--ink-800);
+  border-radius: 10px;
+  background: var(--ink-900);
+  padding: 28px 32px;
+  box-shadow: var(--shadow-soft);
+  animation: rise 0.35s ease;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.account-details-card p {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--divider);
+  font-size: 0.95rem;
+}
+
+.account-details-card p:last-of-type {
+  border-bottom: none;
+}
+
+.account-detail-label {
+  color: var(--paper-400);
+  font-weight: 400;
+}
+
+.account-details-card p:nth-of-type(5) {
+  /* Balance row gets the one hero moment on the page */
+  padding: 18px 0;
+  border-top: 1px solid var(--ink-800);
+  border-bottom: 1px solid var(--ink-800);
+  margin: 6px 0;
+  align-items: baseline;
+}
+
+.account-details-card p:nth-of-type(5) .account-detail-label {
+  font-family: var(--display);
+  font-size: 1rem;
+  color: var(--paper-300);
+}
+
+.account-details-card p:nth-of-type(5)::after {
+  content: '';
+}
+
+.account-details-card p:nth-of-type(5) {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 2rem;
+  color: var(--brass-400);
+  font-variant-numeric: tabular-nums;
+}
+
+.account-details-card p:nth-of-type(2) {
+  font-variant-numeric: tabular-nums;
+}
+
+.account-details-card button {
+  font-family: var(--body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 11px 20px;
+  border-radius: 7px;
+  cursor: pointer;
+  margin-top: 16px;
+  margin-right: 10px;
+  border: 1px solid transparent;
+  transition: transform 0.1s ease, opacity 0.15s ease, background 0.15s ease;
+}
+
+.account-details-card button:active {
+  transform: translateY(1px);
+}
+
+.account-details-card button:nth-of-type(1) {
+  background: var(--brass-500);
+  color: var(--ink-950);
+}
+
+.account-details-card button:nth-of-type(1):hover {
+  background: var(--brass-400);
+}
+
+.account-details-card button:nth-of-type(2) {
+  background: transparent;
+  border-color: var(--teal-500);
+  color: var(--teal-400);
+}
+
+.account-details-card button:nth-of-type(2):hover {
+  background: rgba(79, 163, 145, 0.12);
+}
+
+.account-details-card button:nth-of-type(3) {
+  background: transparent;
+  border-color: var(--brick-500);
+  color: var(--brick-400);
+}
+
+.account-details-card button:nth-of-type(3):hover {
+  background: rgba(176, 80, 63, 0.14);
+}
+
+/* ============================================================
+   Row 2 - Transfer section
+   ============================================================ */
+#transfer-section {
+  margin-top: 32px;
+  border: 1px solid var(--ink-800);
+  border-radius: 10px;
+  background: var(--ink-900);
+  padding: 28px 32px;
+}
+
+#transfer-section form {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  align-items: center;
+  column-gap: 20px;
+  row-gap: 14px;
+  max-width: 560px;
+}
+
+#transfer-section label {
+  font-size: 0.88rem;
+  color: var(--paper-400);
+}
+
+#transfer-section select,
+#transfer-section input {
+  font-family: var(--body);
+  font-size: 0.95rem;
+  color: var(--paper-100);
+  background: var(--ink-850);
+  border: 1px solid var(--ink-700);
+  border-radius: 7px;
+  padding: 10px 12px;
+  width: 100%;
+  transition: border-color 0.15s ease;
+}
+
+#transfer-section select:hover,
+#transfer-section input:hover {
+  border-color: var(--paper-400);
+}
+
+#transfer-section select:focus,
+#transfer-section input:focus {
+  border-color: var(--brass-500);
+  outline: none;
+}
+
+#transfer-section input[type='number'] {
+  font-variant-numeric: tabular-nums;
+}
+
+#transfer-section input::placeholder {
+  color: var(--paper-400);
+}
+
+#transfer-section form button {
+  grid-column: 1 / -1;
+  justify-self: start;
+  margin-top: 6px;
+  padding: 12px 28px;
+  border: none;
+  border-radius: 7px;
+  background: var(--brass-500);
+  color: var(--ink-950);
+  font-family: var(--body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+#transfer-section form button:hover {
+  background: var(--brass-400);
+}
+
+#transfer-section form button:active {
+  transform: translateY(1px);
+}
+
+#transfer-section form button:disabled {
+  background: var(--ink-700);
+  color: var(--paper-400);
+  cursor: not-allowed;
+}
+
+@media (max-width: 560px) {
+  #transfer-section form {
+    grid-template-columns: 1fr;
+  }
+  #transfer-section form label {
+    margin-top: 6px;
+  }
+}
+
+/* ============================================================
+   Row 3 - Transaction history (ledger rows)
+   ============================================================ */
+#transaction-history {
+  margin-top: 28px;
+  border: 1px solid var(--ink-800);
+  border-radius: 10px;
+  background: var(--ink-900);
+  padding: 24px 32px 8px;
+}
+
+#transaction-history > p {
+  padding-bottom: 24px;
+  color: var(--paper-400);
+  font-size: 0.92rem;
+}
+
+.transaction-card {
+  display: grid;
+  grid-template-columns: 1fr 0.7fr 1.5fr 1.1fr 1.1fr 1fr 0.9fr;
+  column-gap: 18px;
+  align-items: start;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--divider);
+}
+
+#transaction-history .transaction-card:last-of-type {
+  border-bottom: none;
+}
+
+.transaction-card:hover {
+  background: var(--ink-850);
+}
+
+.transaction-card p {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.transaction-detail-label {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--paper-400);
+}
+
+.transaction-card p:nth-of-type(1) {
+  font-variant-numeric: tabular-nums;
+  color: var(--paper-300);
+  font-size: 0.85rem;
+}
+
+.transaction-card p:nth-of-type(2) {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--brass-400);
+  font-variant-numeric: tabular-nums;
+}
+
+.transaction-card p:nth-of-type(3) {
+  font-size: 0.9rem;
+  color: var(--paper-100);
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+.transaction-card p:nth-of-type(4) {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.88rem;
+}
+
+.transaction-card p:nth-of-type(6) {
+  font-size: 0.82rem;
+  color: var(--paper-300);
+}
+
+.transaction-card p:nth-of-type(7) {
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+/* Failure message (only rendered when status != COMPLETED) spans the row */
+.transaction-card p:nth-of-type(8) {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  gap: 8px;
+  margin-top: 6px;
+  padding: 10px 14px;
+  background: rgba(176, 80, 63, 0.1);
+  border: 1px solid rgba(176, 80, 63, 0.3);
+  border-radius: 7px;
+  font-size: 0.85rem;
+  color: var(--brick-400);
+}
+
+.transaction-card p:nth-of-type(8) .transaction-detail-label {
+  color: var(--brick-400);
+}
+
+@media (max-width: 900px) {
+  .transaction-card {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 12px;
+  }
+}
+
+@media (max-width: 520px) {
+  .transaction-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- OTP form --- */
+.otp-form {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 14px;
+  background: var(--ink-850);
+  border: 1px solid var(--ink-800);
+  border-radius: 7px;
+}
+
+.otp-input {
+  font-family: var(--body);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.95rem;
+  color: var(--paper-100);
+  background: var(--ink-900);
+  border: 1px solid var(--ink-700);
+  border-radius: 6px;
+  padding: 9px 12px;
+  width: 140px;
+}
+
+.otp-input:focus {
+  border-color: var(--brass-500);
+  outline: none;
+}
+
+.otp-form button {
+  padding: 9px 18px;
+  border: none;
+  border-radius: 6px;
+  background: var(--teal-500);
+  color: var(--ink-950);
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.otp-form button:hover {
+  background: var(--teal-400);
+}
+
+.otp-form button:disabled {
+  background: var(--ink-700);
+  color: var(--paper-400);
+  cursor: not-allowed;
+}
+
+.otp-success {
+  color: var(--teal-400);
+  font-size: 0.85rem;
+  width: 100%;
+}
+
+.otp-error {
+  color: var(--brick-400);
+  font-size: 0.85rem;
+  width: 100%;
+}

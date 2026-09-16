@@ -663,3 +663,7 @@ h3 {
   font-size: 0.85rem;
   width: 100%;
 }
+
+.app-title{
+  margin-top: 16px;
+}

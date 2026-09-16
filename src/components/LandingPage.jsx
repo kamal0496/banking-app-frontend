@@ -21,7 +21,7 @@ function LandingPage() {
   return (
     <>
       {console.log("LandingPage ComponentR Rendered")}
-      <h2>Hello, from LandingPage component</h2>
+      <h2 className="app-title">Banking Application Light</h2>
       <main className="accounts-container">
         <section id="accounts-list">
           {users && users.map((user) => <Account key={user.id} user={user} />)}

@@ -18,7 +18,7 @@ const AccountDetails = () => {
 
   function handleUnblockAccount() {
     fetch(
-      `/api/v1/accounts/${account.accountNumber}/unblock`,
+      `http://localhost:9090/api/v1/accounts/${account.accountNumber}/unblock`,
       {
         method: "PUT",
         headers: {

@@ -9,7 +9,6 @@ function App() {
   return (
     <>
       <AccountsProvider>
-        <h5>Hello, from App component</h5>
         <LandingPage />
       </AccountsProvider>
     </>

@@ -45,7 +45,7 @@ export function AccountsProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const fetchAccounts = useCallback(() => {
-    fetch("http://localhost:9090/api/v1/accounts")
+    fetch("/api/v1/accounts")
       .then((response) => response.json())
       .then((data) => dispatch({ type: "SET_USERS", payload: data }))
       .catch((error) => console.log("error", error));
@@ -60,7 +60,7 @@ export function AccountsProvider({ children }) {
   }, []);
 
   const fetchTransactionHistory = useCallback((accountNumber) => {
-    fetch(`http://localhost:9090/api/v1/transactions/history/${accountNumber}`)
+    fetch(`/api/v1/transactions/history/${accountNumber}`)
       .then((response) => response.json())
       .then((data) => {
         console.log("Transaction history:", data);
@@ -87,7 +87,7 @@ export function AccountsProvider({ children }) {
 
       const poll = () => {
         attempts += 1;
-        fetch("http://localhost:9090/api/v1/accounts", { cache: "no-store" })
+        fetch("/api/v1/accounts", { cache: "no-store" })
           .then((response) => response.json())
           .then((data) => {
             dispatch({ type: "SET_USERS", payload: data });

@@ -30,7 +30,7 @@ const TransferSection = () => {
     console.log(
       `Transferring ${amount} from account ${fromAccount} to account ${toAccount}`,
     );
-    fetch("http://localhost:9090/api/v1/transactions/transfer", {
+    fetch("/api/v1/transactions/transfer", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

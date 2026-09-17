@@ -35,7 +35,7 @@ const TransactionHistory = () => {
     )?.balance;
 
     fetch(
-      `http://localhost:9090/api/v1/transactions/${transactionId}/verify?otp=${otpValue}`,
+      `/api/v1/transactions/${transactionId}/verify?otp=${otpValue}`,
       {
         method: "POST",
         headers: {

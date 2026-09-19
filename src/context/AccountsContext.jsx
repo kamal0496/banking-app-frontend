@@ -7,12 +7,21 @@ const initialState = {
   selectedAccountId: undefined,
   transferFormVisible: false,
   transactionHistory: undefined,
+  isLoadingAccounts: false,
+  isLoadingTransactionHistory: false
 };
 
 function reducer(state, action) {
   switch (action.type) {
+
+    case 'FETCH_ACCOUNTS_START':
+            return { ...state, isLoadingAccounts: true };
+
+     case 'FETCH_TRANSACTION_HISTORY_START':
+            return { ...state, isLoadingTransactionHistory: true, transferFormVisible: false };
+
     case "SET_USERS":
-      return { ...state, users: action.payload };
+      return { ...state, users: action.payload, isLoadingAccounts:false };
 
     case "SELECT_ACCOUNT":
       return {
@@ -34,6 +43,7 @@ function reducer(state, action) {
         ...state,
         transferFormVisible: false,
         transactionHistory: action.payload,
+        isLoadingTransactionHistory: false
       };
 
     default:
@@ -45,10 +55,14 @@ export function AccountsProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const fetchAccounts = useCallback(() => {
+    dispatch({ type: 'FETCH_ACCOUNTS_START' });
     fetch("/api/v1/accounts")
       .then((response) => response.json())
       .then((data) => dispatch({ type: "SET_USERS", payload: data }))
-      .catch((error) => console.log("error", error));
+      .catch((error) => {
+        dispatch({type:"SET_USER", payload: null})
+        console.log("error", error)
+      });
   }, []);
 
   const selectAccount = useCallback((accountId) => {
@@ -60,13 +74,17 @@ export function AccountsProvider({ children }) {
   }, []);
 
   const fetchTransactionHistory = useCallback((accountNumber) => {
+    dispatch({ type: 'FETCH_TRANSACTION_HISTORY_START' });
     fetch(`/api/v1/transactions/history/${accountNumber}`)
       .then((response) => response.json())
       .then((data) => {
         console.log("Transaction history:", data);
         dispatch({ type: "SET_TRANSACTION_HISTORY", payload: data });
       })
-      .catch((error) => console.error("Error occurred:", error));
+      .catch((error) => {
+        console.error("Error occurred:", error);
+        dispatch({ type: 'SET_TRANSACTION_HISTORY', payload: null });
+      });
   }, []);
 
   // Polls the account list until a specific account's balance differs from

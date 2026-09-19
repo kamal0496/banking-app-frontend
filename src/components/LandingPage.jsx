@@ -4,6 +4,8 @@ import AccountDetails from "./AccountDetails.jsx";
 import TransferSection from "./TransferSection.jsx";
 import TransactionHistory from "./TransactionHistory.jsx";
 import { useAccounts } from "../context/AccountsContext.jsx";
+import Spinner from "./Spinner.jsx";
+
 
 function LandingPage() {
   const {
@@ -12,6 +14,8 @@ function LandingPage() {
     transferFormVisible,
     transactionHistory,
     fetchAccounts,
+    isLoadingAccounts,
+    isLoadingTransactionHistory
   } = useAccounts();
 
   useEffect(() => {
@@ -24,8 +28,9 @@ function LandingPage() {
       <h2 className="app-title">Banking Application Light</h2>
       <main className="accounts-container">
         <section id="accounts-list">
-          {users && users.map((user) => <Account key={user.id} user={user} />)}
-          {!users && <p>Unable to fetch accounts..</p>}
+         {isLoadingAccounts && <Spinner label="loading accounts.." />}
+          {!isLoadingAccounts && users && users.map((user) => <Account key={user.id} user={user} />)}
+          {!isLoadingAccounts && !users && <p>Unable to fetch accounts..</p>}
         </section>
         <section id="accounts-details">
           {selectedAccount && <AccountDetails />}
@@ -38,7 +43,7 @@ function LandingPage() {
       </main>
 
       {transferFormVisible && <TransferSection />}
-      {transactionHistory && <TransactionHistory />}
+      {(transactionHistory || isLoadingTransactionHistory) && <TransactionHistory />}
     </>
   );
 }

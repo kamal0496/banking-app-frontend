@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAccounts } from "../context/AccountsContext";
+import Spinner from "./Spinner";
 
 const TransactionHistory = () => {
   const {
@@ -7,7 +8,8 @@ const TransactionHistory = () => {
     users,
     pollAccountBalanceChange,
     fetchTransactionHistory,
-    selectedAccount
+    selectedAccount,
+    isLoadingTransactionHistory
   } = useAccounts();
   let accountReceiverName = "";
   let accountSenderName = "";
@@ -91,11 +93,15 @@ const TransactionHistory = () => {
   return (
     <section id="transaction-history">
       <h3>Transaction History</h3>
-      {transactions.length === 0 ? (
+
+      {isLoadingTransactionHistory && <Spinner label ="loading.."/>}
+      {!isLoadingTransactionHistory && !transactions && <p>unable to fetch</p>}
+
+      {!isLoadingTransactionHistory && transactions.length === 0 ? (
         <p>No transactions found.</p>
       ) : (
 
-        transactions.filter(tx=>{
+        transactions && transactions.filter(tx=>{
           if(!(tx.transactionStatus != "COMPLETED" && tx.receiverAccountNumber == selectedAccount.accountNumber)){
             return tx;
           }

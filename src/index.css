@@ -667,3 +667,63 @@ h3 {
 .app-title{
   margin-top: 16px;
 }
+
+
+/* ============================================================
+   Spinner
+   ============================================================ */
+.spinner {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px;
+}
+ 
+.spinner-ring {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--ink-700);
+  border-top-color: var(--brass-500);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+ 
+.spinner-sm .spinner-ring {
+  width: 14px;
+  height: 14px;
+  border-width: 2px;
+}
+ 
+.spinner-lg .spinner-ring {
+  width: 26px;
+  height: 26px;
+  border-width: 3px;
+}
+ 
+.spinner-label {
+  font-size: 0.88rem;
+  color: var(--paper-400);
+}
+ 
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+ 
+/* buttons showing a spinner instead of their label keep their size steady */
+.account-details-card button:has(.spinner),
+#transfer-section form button:has(.spinner) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+ 
+/* On a dark button (brass fill), the ring's static portion should read
+   against that fill rather than the page background */
+#transfer-section form button .spinner-ring {
+  border-color: rgba(16, 20, 26, 0.35);
+  border-top-color: var(--ink-950);
+}
+ 

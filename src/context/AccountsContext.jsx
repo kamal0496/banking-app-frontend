@@ -1,4 +1,7 @@
 import { createContext, useContext, useReducer, useCallback } from "react";
+import { useAuthFetch } from "../hooks/UseAuthFetch";
+
+const gatewayURI = import.meta.env.VITE_GATEWAY_URI;
 
 const AccountsContext = createContext(null);
 
@@ -53,17 +56,24 @@ function reducer(state, action) {
 
 export function AccountsProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  // fetch wrapper that attaches the Auth0 access token as a Bearer header
+  const authFetch = useAuthFetch();
 
   const fetchAccounts = useCallback(() => {
     dispatch({ type: 'FETCH_ACCOUNTS_START' });
-    fetch("/api/v1/accounts")
-      .then((response) => response.json())
+    authFetch(`${gatewayURI}/api/v1/accounts`)
+      .then((response) => {
+        // a 401/403 has no JSON body; fail explicitly instead of a confusing parse error
+        if (!response.ok) throw new Error(`Failed to fetch accounts: ${response.status}`);
+        return response.json();
+      })
       .then((data) => dispatch({ type: "SET_USERS", payload: data }))
       .catch((error) => {
-        dispatch({type:"SET_USER", payload: null})
-        console.log("error", error)
+        // was "SET_USER" (typo, no such case), which left the spinner running forever
+        dispatch({ type: "SET_USERS", payload: null });
+        console.log("error", error);
       });
-  }, []);
+  }, [authFetch]);
 
   const selectAccount = useCallback((accountId) => {
     dispatch({ type: "SELECT_ACCOUNT", payload: accountId });
@@ -75,8 +85,11 @@ export function AccountsProvider({ children }) {
 
   const fetchTransactionHistory = useCallback((accountNumber) => {
     dispatch({ type: 'FETCH_TRANSACTION_HISTORY_START' });
-    fetch(`/api/v1/transactions/history/${accountNumber}`)
-      .then((response) => response.json())
+    authFetch(`${gatewayURI}/api/v1/transactions/history/${accountNumber}`)
+      .then((response) => {
+        if (!response.ok) throw new Error(`Failed to fetch history: ${response.status}`);
+        return response.json();
+      })
       .then((data) => {
         console.log("Transaction history:", data);
         dispatch({ type: "SET_TRANSACTION_HISTORY", payload: data });
@@ -85,7 +98,7 @@ export function AccountsProvider({ children }) {
         console.error("Error occurred:", error);
         dispatch({ type: 'SET_TRANSACTION_HISTORY', payload: null });
       });
-  }, []);
+  }, [authFetch]);
 
   // Polls the account list until a specific account's balance differs from
   // `previousBalance`, then leaves the refreshed data in state.
@@ -105,7 +118,7 @@ export function AccountsProvider({ children }) {
 
       const poll = () => {
         attempts += 1;
-        fetch("/api/v1/accounts", { cache: "no-store" })
+        authFetch(`${gatewayURI}/api/v1/accounts`, { cache: "no-store" })
           .then((response) => response.json())
           .then((data) => {
             dispatch({ type: "SET_USERS", payload: data });
@@ -125,7 +138,7 @@ export function AccountsProvider({ children }) {
 
       poll();
     },
-    [],
+    [authFetch],
   );
 
   const selectedAccount = state.users?.find(
@@ -140,7 +153,8 @@ export function AccountsProvider({ children }) {
     selectAccount,
     showTransferForm,
     fetchTransactionHistory,
-    pollAccountBalanceChange
+    pollAccountBalanceChange,
+    authFetch
   };
 
   return (

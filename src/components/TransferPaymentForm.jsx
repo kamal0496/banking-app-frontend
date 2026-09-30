@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useAuthFetch } from "./hooks/useAuthFetch";
 
 const API_BASE = "";
 
@@ -13,6 +14,7 @@ function loadRazorpayScript() {
 }
 
 export default function TransferPaymentForm() {
+  const authFetch = useAuthFetch();
   const [form, setForm] = useState({
     senderAccountNumber: "",
     receiverAccountNumber: "",
@@ -37,7 +39,7 @@ export default function TransferPaymentForm() {
 
     try {
       // 1) Create Razorpay order from payment-service via gateway
-      const orderRes = await fetch(`${API_BASE}/api/v1/payments/create-order`, {
+      const orderRes = await authFetch(`${API_BASE}/api/v1/payments/create-order`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

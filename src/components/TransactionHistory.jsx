@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useAccounts } from "../context/AccountsContext";
 import Spinner from "./Spinner";
 
+const gatewayURI = import.meta.env.VITE_GATEWAY_URI;
+
 const TransactionHistory = () => {
   const {
     transactionHistory: transactions,
@@ -9,7 +11,8 @@ const TransactionHistory = () => {
     pollAccountBalanceChange,
     fetchTransactionHistory,
     selectedAccount,
-    isLoadingTransactionHistory
+    isLoadingTransactionHistory,
+    authFetch
   } = useAccounts();
   let accountReceiverName = "";
   let accountSenderName = "";
@@ -36,8 +39,8 @@ const TransactionHistory = () => {
       (u) => u.accountNumber === receiverAccountNumber,
     )?.balance;
 
-    fetch(
-      `/api/v1/transactions/${transactionId}/verify?otp=${otpValue}`,
+    authFetch(
+      `${gatewayURI}/api/v1/transactions/${transactionId}/verify?otp=${otpValue}`,
       {
         method: "POST",
         headers: {

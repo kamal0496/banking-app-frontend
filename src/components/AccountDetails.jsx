@@ -1,11 +1,14 @@
 import { useAccounts } from "../context/AccountsContext";
 
+const gatewayURI = import.meta.env.VITE_GATEWAY_URI;
+
 const AccountDetails = () => {
   const {
     selectedAccount: account,
     showTransferForm,
     fetchTransactionHistory,
     fetchAccounts,
+    authFetch
   } = useAccounts();
 
   function handleTransferFund(event) {
@@ -17,8 +20,8 @@ const AccountDetails = () => {
   }
 
   function handleUnblockAccount() {
-    fetch(
-      `/api/v1/accounts/${account.accountNumber}/unblock`,
+    authFetch(
+      `${gatewayURI}/api/v1/accounts/${account.accountNumber}/unblock`,
       {
         method: "PUT",
         headers: {

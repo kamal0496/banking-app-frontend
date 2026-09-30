@@ -2,8 +2,10 @@ import { useState } from "react";
 import { useAccounts } from "../context/AccountsContext";
 import TransactionHistory from "./TransactionHistory";
 
+const gatewayURI = import.meta.env.VITE_GATEWAY_URI;
+
 const TransferSection = () => {
-  const { users, selectedAccount, fetchAccounts, pollAccountBalanceChange,fetchTransactionHistory } =
+  const { users, selectedAccount, fetchAccounts, pollAccountBalanceChange,fetchTransactionHistory,authFetch } =
     useAccounts();
   const userId = selectedAccount?.id;
 
@@ -30,7 +32,7 @@ const TransferSection = () => {
     console.log(
       `Transferring ${amount} from account ${fromAccount} to account ${toAccount}`,
     );
-    fetch("/api/v1/transactions/transfer", {
+    authFetch(`${gatewayURI}/api/v1/transactions/transfer`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -47,9 +49,10 @@ const TransferSection = () => {
         console.log("Transfer successful:", data);
         
         event.target.reset(); // Reset the form after successful transfer
-        fetchAccounts(); // picks up the sender's debit, which is synchronous
-        pollAccountBalanceChange(toAccount, receiverPreviousBalance); // waits for the async receiver credit
         setTransferResponse(data);
+        // fetchAccounts(); // picks up the sender's debit, which is synchronous
+        pollAccountBalanceChange(toAccount, receiverPreviousBalance); // waits for the async receiver credit
+        
       })
       .catch((error) => {
         console.error("Error occurred:", error)

@@ -17,7 +17,16 @@ const AuthGate = ({ children }) => {
     return (
       <>
         <h2 className="app-title">Banking Application Light</h2>
+        <section className="login" style={{padding: "8px 16px" }}>
         <button onClick={() => loginWithRedirect()}>Log in</button>
+        <div className="test-credentials">
+        <p>use below test credentials:</p>
+        <ul>
+          <li>Username: testuser@gmail.com</li>
+          <li>Password: Test@Auth0#1234</li>
+        </ul>
+        </div>
+        </section>
       </>
     );
   }
